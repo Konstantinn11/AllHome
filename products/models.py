@@ -129,7 +129,7 @@ class Dogovor(models.Model):
     date_oformlenie = models.DateField(verbose_name='Дата оформления договора', null=False, blank=False)
     date_ispolnenie = models.DateField(verbose_name='Дата расторжения', null=True, blank=True)
     summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Сумма договора')
-    zayavka_id = models.OneToOneField(Zayavka, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Номер заявки')
+    zayavka = models.OneToOneField(Zayavka, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Номер заявки')
 
     def __str__(self):
         return '%s %s %s' % (self.number, self.date_oformlenie, self.summa)
@@ -191,12 +191,9 @@ class Contact(models.Model):
 class Act(models.Model):
     number = models.CharField(max_length=30, null=False, blank=False, verbose_name='Номер акта')
     date_document = models.DateField(null=False, blank=False, verbose_name='Дата документа')
-    zayavka = models.ForeignKey(to='Zayavka', on_delete=models.CASCADE, blank=True, null=True,
+    zayavka = models.OneToOneField(to='Zayavka', on_delete=models.CASCADE, blank=True, null=True,
                                verbose_name='Номер заявки')
-    position = models.ForeignKey(to='Position_Price', on_delete=models.CASCADE, null=True, blank=True,
-                                 verbose_name='Позиция прайс-листа')
-    kolichestvo = models.CharField(max_length=30, null=False, blank=False, verbose_name='Количество услуг')
-    summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого по позиции')
+    summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого')
 
     def __str__(self):
         return '%s %s' % (self.number, self.date_document)
@@ -205,3 +202,15 @@ class Act(models.Model):
         verbose_name = 'Акт выполненных работ',
         verbose_name_plural = 'Акты выполненных работ'
 
+class Position_Act(models.Model):
+    act = models.ForeignKey(to='Act', on_delete=models.CASCADE, blank=True, null=True, verbose_name='Номер акта')
+    position = models.ForeignKey(to='Position_Price', on_delete=models.CASCADE, null=True, blank=True, verbose_name='Позиция прайс-листа')
+    kolichestvo = models.CharField(max_length=30, null=False, blank=False, verbose_name='Количество услуг')
+    itogo = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого по позиции')
+
+    def __str__(self):
+        return '%s' % self.act
+
+    class Meta:
+        verbose_name = 'Позиция акта выполненных работ',
+        verbose_name_plural = 'Позиции акта выполненных работ'
