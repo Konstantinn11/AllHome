@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Customer(User):
-    birth_date = models.DateField(null=False, blank=False, verbose_name='Дата рождения')
+    patronymic = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
+    birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     phone_number = models.CharField(max_length=20, null=False, blank=False, verbose_name='Номер телефона')
 
     class Meta:
@@ -11,6 +12,7 @@ class Customer(User):
 
 
 class Employer(User):
+    patronymic = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
     image = models.ImageField(null=True, blank=True, upload_to='image/', verbose_name='Фотография сотрудника')
     employer_position = models.ForeignKey(to='EmployerPosition', on_delete=models.CASCADE, null=True, blank=True,
                                           verbose_name='Должность')

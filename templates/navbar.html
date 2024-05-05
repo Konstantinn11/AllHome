@@ -1,0 +1,67 @@
+{% block content %}
+<div class="navigation">
+    <div class="logo">
+        <p>
+            AllHome
+        </p>
+    </div>
+    <div class="right-site-navig">
+    </div>
+    {% if not user.is_authenticated %}
+        <a class="btn btn-dark" style="margin-right: 1em; margin-left: 1em; background-color: #8C8581; color: inherit" href="{% url 'contacts' %}">О нас</a>
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit" href="{% url 'catalog' %}">Услуги</a>
+        <a class="btn btn-dark" style="margin-right: 1em; margin-left: 1em; background-color: #8C8581; color: inherit" href="{% url 'masters' %}">Исполнители</a>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+    <div class="nav-item">
+        <a class="nav-link" href=''> Добро пожаловать, {{user.first_name}}</a>
+    </div>
+    {% if not user.is_staff %}
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; 
+        color: inherit" href="{% url 'catalog' %}">Заявка на услуги</a>
+    {% endif %}
+    {% if user.is_superuser %}  
+        <a href="/admin" class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit">Админ-панель</a>
+    {% else %}
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit" href="{% url '' %}">Личный кабинет</a>
+    {% endif %}
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit" href="{% url 'contacts' %}">О нас</a>
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit" href="{% url 'catalog' %}">Услуги</a>
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit" href="{% url 'masters' %}">Исполнители</a>
+        <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit" href="{% url 'logout' %}">Выход</a>
+    {% else %}
+        <a class="btn btn-dark" style="margin-right: 1em; margin-left: 1em; background-color: #8C8581; color: inherit" href="{% url 'login' %}">Вход</a>
+    {% endif %}
+</div>
+    
+<style>
+    .btn btn-info {
+        margin-left: 1em;
+         color: white;
+        background-color: bisque;
+    }
+    
+    .logo {
+        font-size: 25px;
+        margin-top: 0.7em;
+        justify-content: left;
+    }
+
+    .navigation {
+        display: flex;
+        position: sticky;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .right-site-navig {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 1em;
+    }
+</style>
+{% endblock content %}
