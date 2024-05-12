@@ -121,7 +121,7 @@ class Zayavka(models.Model):
 class UslugaCategory(models.Model):
     slug = models.SlugField(max_length=255, unique=True, verbose_name='URL')
 
-    title = models.CharField(max_length=30, null=False, blank=False, verbose_name='Категория услуги')
+    title = models.CharField(max_length=60, null=False, blank=False, verbose_name='Категория услуги')
     image = models.ImageField(upload_to="images/", blank=True, verbose_name="Изображение")
 
     def __str__(self):
@@ -153,6 +153,7 @@ class Comment(models.Model):
             verbose_name='Заказчик')
     zayavka = models.ForeignKey(to=Zayavka, on_delete=models.CASCADE, verbose_name='Завка')
     text = models.TextField(max_length=1000, verbose_name='Текст отзыва')
+    publication = models.BooleanField(default=False, verbose_name='Опубликовать')
 
     class Meta:
         verbose_name = 'Отзыв'

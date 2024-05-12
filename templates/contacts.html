@@ -20,6 +20,9 @@
         </p>
 
         {% if user.is_authenticated and not request.user.employer.employer_position.title == "Менеджер" %}
+            <p class="text-center">
+            Если у Вас остались какие-либо вопросы, пожалуйста, воспользуйтесь формой обратной связи.
+            </p>
         <div class="row text-center">
             <div class="col-auto">
                 <form action="{% url "contacts" %}" method="post">
