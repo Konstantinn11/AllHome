@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
 
 
 class Customer(CustomUser):
-    patronymic = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
+    otchestvo = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     phone_number = models.CharField(max_length=20, null=False, blank=False, verbose_name='Номер телефона')
 
@@ -17,7 +17,7 @@ class Customer(CustomUser):
 
 
 class Employer(CustomUser):
-    patronymic = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
+    otchestvo = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
     image = models.ImageField(null=True, blank=True, upload_to='image/', verbose_name='Фотография сотрудника')
     employer_position = models.ForeignKey(to='EmployerPosition', on_delete=models.CASCADE, null=True, blank=True,
                                             verbose_name='Должность')

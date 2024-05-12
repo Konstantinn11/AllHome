@@ -19,7 +19,7 @@
             <br>Режим работы: понедельник-пятница с 10:00 до 19:00, суббота, воскресенье - выходные дни.
         </p>
 
-        {% if not request.user.employer.employer_position.title == "Менеджер" %}
+        {% if user.is_authenticated and not request.user.employer.employer_position.title == "Менеджер" %}
         <div class="row text-center">
             <div class="col-auto">
                 <form action="{% url "contacts" %}" method="post">

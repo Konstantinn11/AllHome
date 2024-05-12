@@ -9,7 +9,7 @@ from products.models import Customer
 class EmployerCustomAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('last_name', 'first_name', 'patronymic',
+        ('Personal info', {'fields': ('last_name', 'first_name', 'otchestvo',
                                       'email', 'phone_number', 'image')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
@@ -23,7 +23,7 @@ class EmployerCustomAdmin(UserAdmin):
 class CustomerCustomAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('last_name', 'first_name', 'patronymic',
+        ('Personal info', {'fields': ('last_name', 'first_name', 'otchestvo',
                                       'email', 'phone_number', 'birth_date')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')})

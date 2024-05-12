@@ -5,7 +5,11 @@
 
 <h1 class="text-center">{{title_on_page}}</h1>
 
-
+{% if not orders.count %}
+    <div class="col-md-12" style="margin-top: 100px; margin-bottom: 100px">
+    <h3>У вас еще нет заявок. <a href={% url 'zayavki' %}>Оформите первую заявку прямо сейчас</a> </h3>
+    </div>
+    {% else %}
 
 <div class="row mx-4 my-4">
     <div class="col">
@@ -78,6 +82,6 @@
 </div>
 
 {% endif %}
-
+{% endif %}
 
 {% endblock content %}
