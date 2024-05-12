@@ -97,7 +97,7 @@ class Position_Price(models.Model):
 
 class Zayavka(models.Model):
     number = models.CharField(max_length=10, null=False, blank=False, verbose_name='Номер заявки')
-    date_document = models.DateField(null=False, blank=False, verbose_name='Дата документа')
+    date_document = models.DateField(null=False, blank=False, verbose_name='Дата исполнения')
     position = models.ManyToManyField(to='Position_Price', null=True, blank=True,
                                  verbose_name='Позиция прайс-листа')
     address = models.CharField(max_length=1000, null=False, blank=False, verbose_name='Адрес исполнения')

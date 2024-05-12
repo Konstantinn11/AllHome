@@ -40,12 +40,17 @@ class AdvertAdmin(CustomerCustomAdmin):
     ...
     
 
+
 admin.site.register(EmployerPosition)
 admin.site.register(ZayavkaState)
 admin.site.register(DogovorState)
 admin.site.register(Price)
 admin.site.register(Position_Price)
-admin.site.register(Zayavka)
+# admin.site.register(Zayavka)
+class ZayavkaAdmin(admin.ModelAdmin):
+    list_display = ('number', 'date_document', 'customer')
+    list_filter = ('date_document', 'employer')
+admin.site.register(Zayavka, ZayavkaAdmin)
 admin.site.register(UslugaCategory)
 admin.site.register(Usluga)
 admin.site.register(Comment)
