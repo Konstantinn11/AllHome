@@ -18,6 +18,26 @@
             Место нахождения: г. Северодвинск, пр-кт Победы, дом 26.
             <br>Режим работы: понедельник-пятница с 10:00 до 19:00, суббота, воскресенье - выходные дни.
         </p>
+
+        {% if not request.user.employer.employer_position.title == "Менеджер" %}
+        <div class="row text-center">
+            <div class="col-auto">
+                <form action="{% url "contacts" %}" method="post">
+                    {% csrf_token %}
+                    <b>Обратная связь</b><br>
+                    <div class="row mb-4">
+                        <div class="col-11">
+                            <textarea class="form-control" name="message" id="id_contact" rows="4"></textarea>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-secondary">Отправить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
     </section>
 {% endblock content %}

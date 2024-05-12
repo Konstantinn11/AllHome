@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<form action="{% url "zayavki" %}" name="cat_usl" method="post" id="cat_usl_form">
+    {% csrf_token %}
+
+    <div class="row my-4 mx-4">
+
+        <div class="col">
+            <b>Наименование</b><br>
+            <select class="form-select" name="category" id="id_category">
+                {% for cat in cats %}
+                    <option value="{{ cat.pk }}" {% if cat.pk|stringformat:"s" == request.POST.category %}selected{% endif %}>{{ cat.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col">
+            <b>Услуга</b><br>
+            <select class="form-select" name="usluga" id="id_usluga">
+                {% for usluga in uslugi %}
+                    <option value="{{usluga.pk}}">
+                        {{usluga.title}} {{usluga.positions_prices.get.cost_product}} p.
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="col">
+            <b>Количество:</b> <span id="rangeValue">0</span><br>
+            <div class="form-input quantity_goods">
+                <input type="range" class="form-range" name="quantity"
+                value="0" min="0" max="10" step="1" id="customRange2">
+            </div>
+        </div>
+
+        <div class="col">
+            <b>Дата</b><br>
+            <input class="form-control" type="date" name="date" id="zayavka_date" required>
+        </div>
+    
+        <div class="col">
+            <b>Мастер</b><br>
+            <select class="form-select" name="master" id="id_master">
+                {% for master in masters %}
+                    <option value="{{master.pk}}">{{master.first_name}} {{master.last_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row my-4 mx-4">
+
+        <div class="col">
+            <textarea class="form-control" name="comment_order" cols="30" rows="5"
+                placeholder="Комментарий к заказу" id="order_comment" required></textarea>
+        </div>
+
+        <div class="col">
+            <div class="row">   
+                <div class="col">
+                    <input class="form-control" type="text" name="address" placeholder="Введите адрес" id="address" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-auto mt-2">
+                    <input class="btn btn-secondary" value="Отправить заявку" name="button" type="submit" id="submitOrderButton">
+                </div>
+            </div> 
+        </div>
+
+    </div>
+
+</form>
+<script src="{% static 'js/form_processing.js' %}"></script>
+{% endblock content %}

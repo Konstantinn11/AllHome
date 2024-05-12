@@ -1,0 +1,83 @@
+{%extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+
+<h1 class="text-center">{{title_on_page}}</h1>
+
+
+
+<div class="row mx-4 my-4">
+    <div class="col">
+        <b>Номер заявки</b><br>        
+    </div>
+    <div class="col">
+        <b>Сумма</b><br>       
+    </div>
+    <div class="col">
+        <b>Статус заявки</b><br>        
+    </div>
+    <div class="col">
+        <b>Мастер</b><br>
+    </div>
+    <div class="col">
+        <b>Услуга</b><br>
+    </div>
+</div>
+<hr>
+{% for order in orders %}
+<div class="row mx-4 my-2">
+    <div class="col">
+        {{order.number}}
+    </div>
+    <div class="col">
+        {{order.total_price}} р.
+    </div>
+    <div class="col">
+        {{order.stateozayvkas.get.status}}
+    </div>
+    <div class="col">
+        {{order.employer.first_name}} {{order.employer.last_name}}
+    </div>
+    <div class="col">
+        <ul>
+            {% for service in order.position.all %}
+                <li>{{service.usluga.title}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<hr>
+{% endfor %}
+
+{% if current_user == 'customer' %}
+<div class="row mx-4 my-4">
+    <div class="col">
+        <form action="{% url "profile" pk=user.pk %}" name="comment" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-5">
+                    <b>Оставьте свой отзыв</b><br>
+                    {{form.text}}
+                </div>
+                <div class="col-2 align-items-start ms-auto">
+                    <b>Выберете номер заявки</b><br>
+                    <input type="hidden" name="user" value="{{request.user.pk}}">
+                    <select class="form-select" name="zayavka" id="id_zayavka">
+                        {% for zayavka in zayavki_customer %}
+                            <option value="{{zayavka.pk}}" required>{{zayavka.number}}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-secondary mt-2" type="submit">Оставить отзыв</button>
+                </div>
+                <div class="col-2"></div>
+            </div>        
+        </form>
+    </div>
+</div>
+
+{% endif %}
+
+
+{% endblock content %}

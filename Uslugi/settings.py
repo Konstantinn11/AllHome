@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'products',
     'pages',
 ]
@@ -137,3 +138,6 @@ CART_SESSION_ID = 'cart'
 
 MY_INFO = 80
 MESSAGE_LEVEL = MY_INFO
+
+# для аунтефикации сотрудников
+AUTH_USER_MODEL = 'products.CustomUser'

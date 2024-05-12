@@ -16,7 +16,7 @@
         </div>
     </form>
 </div>
-    
+
 <div class="row row-cols-lg-4 row-cols-md-2">
     {% for item in items %}
     <div class="col" style="margin-top: 2em">
@@ -27,19 +27,14 @@
             <div class="card-body custom-card-body">
                 <div style="height: 40%">
                     <h5 style="margin-bottom: 0.2em; margin-top: 1em">{{ item.title }}</h5>
-
                 </div>
 
-                 <div class="text-end" style="height: 40%">
-                    {% if search %}
+                <div class="text-end" style="height: 40%">
                     <h5 style="margin-bottom: 0.2em; margin-top: 1em">
                         Цена: {{ item.positions_prices.get.cost_product }} р.
                     </h5>
-                    {% endif %}
-                    {% if not search %}
-                    <a class="btn custom-button-pill" href="{% url 'uslugi_cat' slug=item.slug %}">Подробнее</a>
-                    {% endif %}
                 </div>
+
             </div>
         </div>
     </div>

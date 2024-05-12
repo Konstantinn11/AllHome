@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.conf.urls.static import static
 from django.contrib.auth import views as v
 from pages import views
@@ -13,8 +13,15 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('contacts/', views.contacts_view, name='contacts'),
     path('masters/', views.masters_view, name='masters'),
+    path('masters/<int:pk>', views.master_detail_view, name='master_detail'),
     path('dannye/', views.dannye_view, name='dannye'),
     path('catalog/', views.catalog_view, name='catalog'),
+
+    path('catalog/<slug:slug>', views.uslugi_view, name='uslugi_cat'),
+    path('profile/<int:pk>', views.profile, name='profile'),
+    path('zayavki/', views.zayavki_view, name='zayavki'),
+
+    path('api/get_services_by_category/', views.get_services_by_category, name='get_services_by_category'),
 ]
 if settings.DEBUG:
        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

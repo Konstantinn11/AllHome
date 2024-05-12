@@ -1,6 +1,23 @@
 {%extends 'base.html'%}
 {% load static %}
 {% block content %}
+
+<div class="find mt-2">
+    <form action="{% url "masters" %}">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-3">
+                <input class="form-control" type="text" name="masters_search" placeholder="Поиск мастера">
+            </div>
+            <div class="col-1">
+                <button class="btn btn-secondary" type="submit">Найти</button>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </form>
+</div>
+
+
 <div class="row row-cols-lg-4 row-cols-md-2">
     {% for item in masters %}
     <div class="col" style="margin-top: 2em">
@@ -14,7 +31,7 @@
                     <div style="color: #8C8581; font-weight: bold">{{ item.category.title }}</div>
                 </div>
                  <div class="text-end" style="height: 40%">
-                    <a class="btn custom-button-pill" href="{% url 'masters' %}">Отзывы</a>
+                    <a class="btn custom-button-pill" href="{% url 'master_detail' pk=item.pk %}">Отзывы</a>
                 </div>
             </div>
         </div>

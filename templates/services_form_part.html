@@ -1,0 +1,13 @@
+<select class="form-select" name="usluga" id="id_usluga">
+    {% for usluga in uslugi %}
+        <option value="{{usluga.pk}}">
+            {{usluga.title}} {{usluga.positions_prices.get.cost_product}} p.
+        </option>
+    {% endfor %}
+</select>
+
+<select class="form-select" name="master" id="id_master">
+    {% for master in masters %}
+        <option value="{{master.pk}}">{{master.first_name}} {{master.last_name}}</option>
+    {% endfor %}
+</select>

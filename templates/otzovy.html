@@ -1,0 +1,46 @@
+{%extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col">
+            <div class="photo-master">
+                <img src="{{master.image.url}}" alt="photo_master">
+            </div>
+        </div>
+        <div class="col">
+            <h4>Отзывы о мастере {{master.last_name}} {{master.first_name}}</h4>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>Специальность:</b> {{master.category.title}}<br>
+                    </p>
+                </div>
+            <div class="row">            
+                <div class="col">                    
+                    {% for o in otzovy %}
+                        <b>{{o.user.first_name}} {{o.user.last_name}}:</b><br> {{o.text}}
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .photo-master img{
+        width: 20em;
+        height: 30em;
+        border-style: solid;
+        border-width: 0.5px;
+        border-radius: 5em 5em; 
+        object-fit: cover;
+        box-shadow: 10px 20px 25px rgba(0, 0, 0, 0.4);
+            
+    }
+</style>
+
+{% endblock content %}
