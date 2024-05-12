@@ -123,12 +123,12 @@ def profile(request, pk):
 
     # если заказчик
     if user.__class__ == Customer:
-        orders = only(Zayavka.objects.filter(customer__pk=pk))
+        orders = only(Zayavka.objects.filter(customer__pk=pk).order_by('-number'))
         title_on_page = f'{user.first_name} {user.last_name}, ваши заявки'
         current_user = 'customer'
     # если мастер
     elif user.employer_position.pk == 1:
-        orders = only(Zayavka.objects.filter(employer__pk=pk))
+        orders = only(Zayavka.objects.filter(employer__pk=pk).order_by('-number'))
         title_on_page = f'{user.last_name} {user.first_name}, ваши выполненые и текущие заявки'
         current_user = 'master'
     # если менеджер    
