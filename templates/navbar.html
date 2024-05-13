@@ -23,7 +23,7 @@
             color: inherit" href="{% url 'zayavki' %}">Заявка на услуги</a>
         {% endif %}
 
-        {% if user.is_superuser %}  
+        {% if user.is_staff %}  
             <a href="/admin" class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit">Админ-панель</a>
             <a class="btn btn-dark" style="margin-left: 1em; margin-right: 1em; background-color: #8C8581; color: inherit"
             href="{% url 'profile' pk=user.pk %}">Личный кабинет</a>

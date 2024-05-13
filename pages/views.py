@@ -136,6 +136,11 @@ def profile(request, pk):
         orders = only(Zayavka.objects.filter(stateozayvkas__status__title='На рассмотрении'))
         title_on_page = f'{user.last_name} {user.first_name}, все заявки на рассмотрении'
         current_user = 'manager'
+    # если директор
+    elif user.employer_position.pk == 4:
+        orders = only(Zayavka.objects.filter(stateozayvkas__status__title='Выполнена').order_by('-number'))
+        title_on_page = f'{user.last_name} {user.first_name}, все выполненные заявки'
+        current_user = 'direktor'
 
     if request.method == 'POST':
         form = ProductCommentForm(request.POST)

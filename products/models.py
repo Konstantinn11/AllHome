@@ -215,6 +215,7 @@ class Contact(models.Model):
     message = models.TextField(max_length=200, blank=False, null=True, verbose_name='Сообщение')
     data = models.DateField(verbose_name="Дата отправки", default=timezone.now)
     time_send = models.TimeField(verbose_name='Время отправки', default=timezone.now)
+
     def __str__(self):
         return '%s %s %s' % (self.username, self.data, self.time_send)
 
