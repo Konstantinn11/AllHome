@@ -83,7 +83,7 @@ class Position_Price(models.Model):
     usluga = models.ForeignKey('Usluga', on_delete=models.CASCADE, blank=True, null=True,
             related_name="positions_prices", verbose_name="Услуга")
     cost_product = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False,
-                                       verbose_name="Стоимость услуги")
+                                       verbose_name="Стоимость услуги, руб.")
     price_list = models.ForeignKey('Price', on_delete=models.CASCADE, null=True, blank=True,
                                     verbose_name='Прайс-лист')
 
@@ -108,7 +108,7 @@ class Zayavka(models.Model):
                 verbose_name='Сотрудник')
     positions_and_prices = models.TextField(max_length=1000, default='',
                                             verbose_name='Позиции и количество')
-    total_price = models.PositiveIntegerField(default=0, verbose_name='Итого')
+    total_price = models.PositiveIntegerField(default=0, verbose_name='Итого, руб.')
 
     def __str__(self):
         return '%s %s %s' % (self.number, self.date_document, self.customer)
@@ -167,7 +167,7 @@ class Dogovor(models.Model):
     number = models.CharField(max_length=30, null=False, blank=False, verbose_name='Номер договора')
     date_oformlenie = models.DateField(verbose_name='Дата оформления договора', null=False, blank=False)
     date_ispolnenie = models.DateField(verbose_name='Дата расторжения', null=True, blank=True)
-    summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Сумма договора')
+    summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Сумма договора, руб.')
     zayavka = models.OneToOneField(Zayavka, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Номер заявки')
 
     def __str__(self):
@@ -229,7 +229,7 @@ class Act(models.Model):
     date_document = models.DateField(null=False, blank=False, verbose_name='Дата документа')
     zayavka = models.OneToOneField(to='Zayavka', on_delete=models.CASCADE, blank=True, null=True,
                                     verbose_name='Номер заявки')
-    summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого')
+    summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого, руб.')
 
     def __str__(self):
         return '%s %s' % (self.number, self.date_document)
@@ -244,7 +244,7 @@ class Position_Act(models.Model):
     position = models.ForeignKey(to='Position_Price', on_delete=models.CASCADE, null=True, blank=True,
                                     verbose_name='Позиция прайс-листа')
     kolichestvo = models.CharField(max_length=30, null=False, blank=False, verbose_name='Количество услуг')
-    itogo = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого по позиции')
+    itogo = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого по позиции, руб.')
 
     def __str__(self):
         return '%s' % self.act
