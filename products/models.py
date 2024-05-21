@@ -18,7 +18,7 @@ class Customer(CustomUser):
 
 class Employer(CustomUser):
     otchestvo = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
-    image = models.ImageField(null=True, blank=True, upload_to='image/', verbose_name='Фотография сотрудника')
+    image = models.ImageField(null=True, blank=True, upload_to='image/', verbose_name='Фотография сотрудника (jpeg, png)')
     employer_position = models.ForeignKey(to='EmployerPosition', on_delete=models.CASCADE, null=True, blank=True,
                                             verbose_name='Должность')
     category = models.ForeignKey(to='UslugaCategory', on_delete=models.CASCADE, blank=True, null=True,
@@ -122,7 +122,7 @@ class UslugaCategory(models.Model):
     slug = models.SlugField(max_length=255, unique=True, verbose_name='URL')
 
     title = models.CharField(max_length=60, null=False, blank=False, verbose_name='Категория услуги')
-    image = models.ImageField(upload_to="images/", blank=True, verbose_name="Изображение")
+    image = models.ImageField(upload_to="images/", blank=True, verbose_name="Изображение (jpeg, png)")
 
     def __str__(self):
         return '%s' % self.title
@@ -136,7 +136,7 @@ class Usluga(models.Model):
 
     title = models.CharField(max_length=60, null=False, blank=False, verbose_name='Наименование услуги')
     description = models.TextField(verbose_name='Описание услуги')
-    image = models.ImageField(upload_to="images/", blank=True, verbose_name="Изображение")
+    image = models.ImageField(upload_to="images/", blank=True, verbose_name="Изображение (jpeg, png)")
     category = models.ForeignKey(to='UslugaCategory', on_delete=models.CASCADE, blank=True, null=True,
                                     verbose_name="Категория услуги")
 
