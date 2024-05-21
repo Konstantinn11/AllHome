@@ -78,12 +78,11 @@
         {{ form.password1 }}
         <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
         {{ form.password2 }}
-    </div>
-    <div class="form-check">
-    <input id="cb" type="checkbox" style="float: left; margin-top: 5px;>">
-    <div style="margin-left: 25px;">
-     Согласен на <a href={% url 'dannye' %}>обработку персональных данных</a>
-    </div>
+        <label for="{{ form.soglasie.id_for_label }}">
+        <div>
+            {{ form.soglasie }} Согласен на <a href={% url 'dannye' %}>обработку персональных данных</a>
+        </div>
+        </label>
     </div>
     <button type="submit">Зарегистрироваться</button>
 </form>

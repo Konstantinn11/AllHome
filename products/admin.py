@@ -10,7 +10,7 @@ class EmployerCustomAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('last_name', 'first_name', 'otchestvo',
-                                      'email', 'phone_number', 'image')}),
+                                      'email', 'phone_number', 'image', 'soglasie')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
         ('Custom Fields', {'fields': 
@@ -24,7 +24,7 @@ class CustomerCustomAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('last_name', 'first_name', 'otchestvo',
-                                      'email', 'phone_number', 'birth_date')}),
+                                      'email', 'phone_number', 'birth_date', 'soglasie')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')})
     )

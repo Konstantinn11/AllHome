@@ -10,6 +10,7 @@ class Customer(CustomUser):
     otchestvo = models.CharField(max_length=30, blank=True, null=True, verbose_name='Отчество')
     birth_date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     phone_number = models.CharField(max_length=20, null=False, blank=False, verbose_name='Номер телефона')
+    soglasie = models.BooleanField(default=False, verbose_name='Согласие на обработку персональных данных')
 
     class Meta:
         verbose_name = 'Заказчик'
@@ -26,6 +27,7 @@ class Employer(CustomUser):
     phone_number = models.CharField(max_length=20, null=False, blank=False, verbose_name='Номер телефона')
     date_of_employment = models.DateField(null=True, blank=False, verbose_name='Дата приема на работу')
     date_of_dismissal = models.DateField(null=True, blank=True, verbose_name='Дата увольнения')
+    soglasie = models.BooleanField(default=False, verbose_name='Согласие на обработку персональных данных')
 
     class Meta:
         verbose_name = 'Сотрудник'
