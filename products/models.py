@@ -170,6 +170,7 @@ class Dogovor(models.Model):
     date_ispolnenie = models.DateField(verbose_name='Дата расторжения', null=True, blank=True)
     summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Сумма договора, руб.')
     zayavka = models.OneToOneField(Zayavka, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Номер заявки')
+    image = models.ImageField(upload_to="documents/", blank=True, verbose_name="Договор (.jpeg, .png)")
 
     def __str__(self):
         return '%s %s %s' % (self.number, self.date_oformlenie, self.summa)
@@ -231,6 +232,7 @@ class Act(models.Model):
     zayavka = models.OneToOneField(to='Zayavka', on_delete=models.CASCADE, blank=True, null=True,
                                     verbose_name='Номер заявки')
     summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого, руб.')
+    image = models.ImageField(upload_to="documents/", blank=True, verbose_name="Акт выполненных работ (.jpeg, .png)")
 
     def __str__(self):
         return '%s %s' % (self.number, self.date_document)
@@ -253,3 +255,61 @@ class Position_Act(models.Model):
     class Meta:
         verbose_name = 'Позиция акта выполненных работ',
         verbose_name_plural = 'Позиции акта выполненных работ'
+
+class Pretensia(models.Model):
+    number = models.CharField(max_length=30, null=False, blank=False, verbose_name='Номер претензии')
+    date_document = models.DateField(null=False, blank=False, verbose_name='Дата документа')
+    dogovor = models.ForeignKey(to='Dogovor', on_delete=models.CASCADE, blank=True, null=True,
+                                    verbose_name='Номер договора')
+    employer = models.ForeignKey(to='Employer', on_delete=models.CASCADE, blank=True, null=True,
+                                verbose_name='Сотрудник')
+    customer = models.ForeignKey(to='Customer', on_delete=models.CASCADE, blank=True, null=True,
+                                verbose_name='Заказчик')
+    image = models.ImageField(upload_to="documents/", blank=True, verbose_name="Претензия (.jpeg, .png)")
+
+    def __str__(self):
+        return '%s %s' % (self.number, self.date_document)
+
+    class Meta:
+        verbose_name = 'Претензия',
+        verbose_name_plural = 'Претензии'
+
+class Position_Pretensia(models.Model):
+    pretensia = models.ForeignKey(to='Pretensia', on_delete=models.CASCADE, blank=True, null=True, verbose_name='Номер акта')
+    position = models.ForeignKey(to='Position_Price', on_delete=models.CASCADE, null=True, blank=True,
+                                    verbose_name='Позиция прайс-листа')
+    kolichestvo = models.CharField(max_length=30, null=False, blank=False, verbose_name='Количество услуг')
+
+    def __str__(self):
+        return '%s' % self.pretensia
+
+    class Meta:
+        verbose_name = 'Позиция претензии',
+        verbose_name_plural = 'Позиции претензии'
+
+class StateofPretensia(models.Model):
+    pretensia = models.ForeignKey(to='Pretensia', on_delete=models.CASCADE, verbose_name='Претензия',
+                                related_name='stateopretensias', null=True, blank=True)
+    status = models.ForeignKey(to='PretensiaState', on_delete=models.CASCADE, verbose_name='Статус претензия',
+                                related_name='stateopretensias', null=True, blank=True)
+    date = models.DateField(verbose_name='Дата статуса', null=False, blank=False)
+    employer = models.ForeignKey(to='Employer', on_delete=models.CASCADE, verbose_name='Сотрудник',
+                                    null=True, blank=True)
+
+    def __str__(self):
+        return '%s %s %s' % (self.pretensia, self.status, self.date)
+
+    class Meta:
+        verbose_name = 'Статус в претензии'
+        verbose_name_plural = 'Статусы в претензии'
+
+class PretensiaState(models.Model):
+    title = models.CharField(max_length=20, null=False, blank=False, verbose_name='Статус претензии')
+
+    def __str__(self):
+        return '%s' % self.title
+
+    class Meta:
+        verbose_name = 'Статус претензии'
+        verbose_name_plural = 'Статусы претензии'
+

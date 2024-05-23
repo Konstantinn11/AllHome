@@ -73,6 +73,10 @@ admin.site.register(StateofZayavka)
 admin.site.register(Contact)
 admin.site.register(Act)
 admin.site.register(Position_Act)
+admin.site.register(Pretensia)
+admin.site.register(Position_Pretensia)
+admin.site.register(StateofPretensia)
+admin.site.register(PretensiaState)
 
 
 # app_config = apps.get_app_config('products')
