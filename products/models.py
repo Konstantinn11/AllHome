@@ -232,7 +232,6 @@ class Act(models.Model):
     zayavka = models.OneToOneField(to='Zayavka', on_delete=models.CASCADE, blank=True, null=True,
                                     verbose_name='Номер заявки')
     summa = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Итого, руб.')
-    image = models.ImageField(upload_to="documents/", blank=True, verbose_name="Акт выполненных работ (.jpeg, .png)")
 
     def __str__(self):
         return '%s %s' % (self.number, self.date_document)
