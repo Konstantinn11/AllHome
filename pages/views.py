@@ -234,3 +234,85 @@ def get_services_by_category(request):
             'masters': Employer.objects.filter(category=category)
         }
         return render(request, 'services_form_part.html', context)
+
+def get_virychka(request):
+    categories = UslugaCategory.objects.all()
+    today = timezone.now().date()
+    current_month = today.month
+
+    # Фильтрация заявок за текущий день и месяц со статусом "Выполнена"
+    zayavki_za_day = StateofZayavka.objects.filter(
+        Q(date=today) & Q(status__title="Выполнена")
+    ).values_list('zayavka_id', flat=True)
+
+    zayavki_za_month = StateofZayavka.objects.filter(
+        Q(date__month=current_month) & Q(status__title="Выполнена")
+    ).values_list('zayavka_id', flat=True)
+
+    virychka_za_day_total = 0
+    virychka_za_month_total = 0
+
+    for category in categories:
+        category.master_list = Employer.objects.filter(category=category)
+        category.vyruchka_za_day = 0
+        category.vyruchka_za_month = 0
+
+        for employee in category.master_list:
+            zayavki = Zayavka.objects.filter(employer=employee)
+            zayavki2 = []
+            zayavki3 = []
+
+            for zayavka in zayavki:
+                if zayavka.id in zayavki_za_day:
+                    zayavki2.append(zayavka)
+                    category.vyruchka_za_day += zayavka.total_price
+
+                if zayavka.id in zayavki_za_month:
+                    zayavki3.append(zayavka)
+                    category.vyruchka_za_month += zayavka.total_price
+
+            employee.zayavka_za_day = zayavki2
+            employee.zayavka_za_month = zayavki3
+        virychka_za_day_total += category.vyruchka_za_day
+        virychka_za_month_total += category.vyruchka_za_month
+    context = {"categories": categories, "virychka_za_day_total": virychka_za_day_total,
+               "virychka_za_month_total": virychka_za_month_total}
+    return render(request, "zayavkiotchet.html", context)
+
+def get_masters(request):
+    today = timezone.now().date()
+    current_month = today.month
+
+    # Фильтрация заявок за текущий день и месяц со статусом "Выполнена"
+    zayavki_za_day = StateofZayavka.objects.filter(
+        Q(date=today) & Q(status__title="Выполнена")
+    ).values_list('zayavka_id', flat=True)
+
+    zayavki_za_month = StateofZayavka.objects.filter(
+        Q(date__month=current_month) & Q(status__title="Выполнена")
+    ).values_list('zayavka_id', flat=True)
+
+    virychka_za_month_total = 0
+
+    master_list = Employer.objects.filter(employer_position__title="Мастер")
+
+    for employee in master_list:
+        zayavki = Zayavka.objects.filter(employer=employee)
+        zayavki2 = []
+        zayavki3 = []
+        vyruchka_za_month = 0
+
+        for zayavka in zayavki:
+            if zayavka.id in zayavki_za_day:
+                zayavki2.append(zayavka)
+
+            if zayavka.id in zayavki_za_month:
+                zayavki3.append(zayavka)
+                vyruchka_za_month += zayavka.total_price
+
+        employee.zayavka_za_day_kol = len(zayavki2)
+        employee.zayavka_za_month_kol = len(zayavki3)
+        employee.vyruchka_za_month = vyruchka_za_month
+        virychka_za_month_total += employee.vyruchka_za_month
+    context = {"employee": master_list, "virychka_za_month_total": virychka_za_month_total}
+    return render(request, "mastersotchet.html", context)

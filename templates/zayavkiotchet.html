@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div style="padding: 1em">    
+<table class="table table-hover" id="export">
+  <thead>
+    <tr>
+      <th scope="col">№</th>
+      <th scope="col">Категория услуги</th>
+      <th scope="col">Выручка за день</th>
+      <th scope="col">Выручка за месяц</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for category in categories %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ category.title }}</td>
+      <td>{{ category.vyruchka_za_day }}</td>
+      <td>{{ category.vyruchka_za_month }}</td>
+    </tr>
+  {% endfor %}
+  <tr>
+      <th scope="row"></th>
+      <td>Итого</td>
+      <td>{{ virychka_za_day_total }}</td>
+      <td>{{ virychka_za_month_total }}</td>
+  </tr>
+  </tbody>
+</table>
+<div style="display: flex; flex-direction: row-reverse;">
+<button class="btn btn-outline-dark" onclick="exportToExcel('Отчет по выручке ')">Сохранить</button>    
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+<script>
+    function exportToExcel(name) {
+            var table = document.getElementById('export');
+
+            // Клонируем таблицу для исключения столбцов с id=ignore-export
+            var clonedTable = table.cloneNode(true);
+            var columnsToRemove = clonedTable.querySelectorAll("#ignore-export");
+            columnsToRemove.forEach(function (column) {
+                column.parentNode.removeChild(column);
+            });
+
+            // Создаем новый Excel-документ из клонированной таблицы
+            var wb = XLSX.utils.table_to_book(clonedTable);
+
+            // Сохраняем Excel-документ в файл
+            var wbout = XLSX.write(wb, {bookType: 'xlsx', bookSST: true, type: 'binary'});
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            var now = new Date();
+            var timestamp = now.toISOString().slice(0, 19).replace(/[-T]/g, '').replace(/:/g, '');
+
+            // Задаем имя файла как время генерации отчета + название
+            var filename = name + timestamp + '.xlsx';
+            saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), filename);
+        }
+</script>    
+{% endblock content %}

@@ -22,6 +22,9 @@ urlpatterns = [
     path('zayavki/', views.zayavki_view, name='zayavki'),
 
     path('api/get_services_by_category/', views.get_services_by_category, name='get_services_by_category'),
+
+    path('reports/virychka/', views.get_virychka, name='reports_virychka'),
+    path('reports/masters/', views.get_masters, name='reports_masters'),
 ]
 if settings.DEBUG:
        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
