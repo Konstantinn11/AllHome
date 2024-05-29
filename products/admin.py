@@ -44,8 +44,28 @@ class AdvertAdmin(CustomerCustomAdmin):
 admin.site.register(EmployerPosition)
 admin.site.register(ZayavkaState)
 admin.site.register(DogovorState)
-admin.site.register(Price)
-admin.site.register(Position_Price)
+# admin.site.register(Position_Price)
+# admin.site.register(Price)
+class PositionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Прайс-лист', {
+            'fields': [
+                ('price_list'),
+            ],
+        }),
+        ('Позиция прайс-листа и стоимость', {
+            'fields': [
+                ('usluga', 'cost_product'),
+            ],
+        })
+    ]
+admin.site.register(Position_Price, PositionAdmin)
+class PositionPriceInline(admin.TabularInline):
+    model = Position_Price
+class PriceAdmin(admin.ModelAdmin):
+    inlines = [PositionPriceInline]
+admin.site.register(Price, PriceAdmin)
+
 # admin.site.register(Zayavka)
 class ZayavkaAdmin(admin.ModelAdmin):
     list_display = ('number', 'date_document', 'customer')
