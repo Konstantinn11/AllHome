@@ -5,20 +5,20 @@
 <form method="POST" style="display: flex;
     flex-direction: row;
     margin-left: 0;
-    width: 45%;
+    width: 55%;
     align-items: baseline">
 {% csrf_token %}
-    <div style="display: flex">
+    <div style="display: flex; gap: 0.5em">
 {{ form.as_p }}
     </div>
 <button type="submit" class="btn btn-outline-dark" style="display: flex">Генерировать отчет</button>
 </form>
-<h3>Отчет по выручке за {{ date }}</h3>
+<h3>Отчет по выручке за период с {{ date1 }} по {{ date2 }}</h3>
 <table class="table table-hover" id="export">
 <thead style="display: none">
 <tr>
     <th>
-        Отчет по выручке за {{ date }}
+        Отчет по выручке за период с {{ date1 }} по {{ date2 }}
     </th>
 </tr>
 </thead>
@@ -26,7 +26,7 @@
     <tr>
       <th scope="col">№</th>
       <th scope="col">Категория услуги</th>
-      <th scope="col">Выручка за {{ date }}, руб.</th>
+      <th scope="col">Выручка за период, руб.</th>
     </tr>
   </thead>
   <tbody>
@@ -34,18 +34,18 @@
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{ category.title }}</td>
-      <td>{{ category.vyruchka_za_day }}</td>
+      <td>{{ category.vyruchka_za_month }}</td>
     </tr>
   {% endfor %}
   <tr>
       <th scope="row"></th>
       <td>Итого, руб.</td>
-      <td>{{ virychka_za_day_total }}</td>
+      <td>{{ virychka_za_month_total }}</td>
   </tr>
   </tbody>
 </table>
 <div style="display: flex; flex-direction: row-reverse;">
-<button class="btn btn-outline-dark" onclick="exportToExcel('Отчет по выручке за день ')">Сохранить</button>    
+<button class="btn btn-outline-dark" onclick="exportToExcel('Отчет по выручке ')">Сохранить</button>    
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>

@@ -25,6 +25,8 @@ urlpatterns = [
 
     path('reports/virychka/', views.get_virychka, name='reports_virychka'),
     path('reports/masters/', views.get_masters, name='reports_masters'),
+    path('reports/virychkamonth/', views.get_virychka_month, name='reports_virychka_month'),
+    path('reports/masterssumma/', views.get_masters_summa, name='reports_masters_summa'),
 ]
 if settings.DEBUG:
        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

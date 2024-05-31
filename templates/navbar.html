@@ -30,8 +30,10 @@
             Отчеты
             </button>
             <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url "reports_virychka" %}">Отчет по выручке</a></li>
-            <li><a class="dropdown-item" href="{% url "reports_masters" %}">Отчет по исполнителям</a></li>
+            <li><a class="dropdown-item" href="{% url "reports_virychka" %}">Отчет по выручке за день</a></li>
+            <li><a class="dropdown-item" href="{% url "reports_virychka_month" %}">Отчет по выручке за период</a></li>    
+            <li><a class="dropdown-item" href="{% url "reports_masters" %}">Отчет по выходам исполнителей за день</a></li>
+            <li><a class="dropdown-item" href="{% url "reports_masters_summa" %}">Отчет по выручке исполнителей за период</a></li>    
             </ul>
             </div>
             {% endif %}    

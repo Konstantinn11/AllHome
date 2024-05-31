@@ -1,3 +1,5 @@
+import calendar
+
 from django.shortcuts import redirect
 from .forms import *
 from django.contrib.auth import logout, authenticate
@@ -8,6 +10,8 @@ from products.models import Usluga
 from products.forms import ProductCommentForm
 
 import json
+
+import datetime
 
 
 def home_view(request):
@@ -235,61 +239,141 @@ def get_services_by_category(request):
         }
         return render(request, 'services_form_part.html', context)
 
-def get_virychka(request):
+def get_virychka(request, date=timezone.now().date()):
     categories = UslugaCategory.objects.all()
-    today = timezone.now().date()
-    current_month = today.month
 
-    # Фильтрация заявок за текущий день и месяц со статусом "Выполнена"
+    if type(date) == type("1"):
+        date = datetime.datetime.strptime(date, '%Y%m%d').date()
+    if request.method == "POST":
+        form = DatePickerForm(request.POST)
+        if form.is_valid():
+            date = form.cleaned_data['date']
+            print(date)
+    else:
+        form = DatePickerForm()
+    # Фильтрация заявок за текущий день со статусом "Выполнена"
     zayavki_za_day = StateofZayavka.objects.filter(
-        Q(date=today) & Q(status__title="Выполнена")
-    ).values_list('zayavka_id', flat=True)
-
-    zayavki_za_month = StateofZayavka.objects.filter(
-        Q(date__month=current_month) & Q(status__title="Выполнена")
+        Q(date=date) & Q(status__title="Выполнена")
     ).values_list('zayavka_id', flat=True)
 
     virychka_za_day_total = 0
-    virychka_za_month_total = 0
 
     for category in categories:
         category.master_list = Employer.objects.filter(category=category)
         category.vyruchka_za_day = 0
-        category.vyruchka_za_month = 0
 
         for employee in category.master_list:
             zayavki = Zayavka.objects.filter(employer=employee)
             zayavki2 = []
-            zayavki3 = []
 
             for zayavka in zayavki:
                 if zayavka.id in zayavki_za_day:
                     zayavki2.append(zayavka)
                     category.vyruchka_za_day += zayavka.total_price
 
-                if zayavka.id in zayavki_za_month:
-                    zayavki3.append(zayavka)
-                    category.vyruchka_za_month += zayavka.total_price
-
             employee.zayavka_za_day = zayavki2
-            employee.zayavka_za_month = zayavki3
+
         virychka_za_day_total += category.vyruchka_za_day
-        virychka_za_month_total += category.vyruchka_za_month
+
     context = {"categories": categories, "virychka_za_day_total": virychka_za_day_total,
-               "virychka_za_month_total": virychka_za_month_total}
+               "date": date, "form": form}
     return render(request, "zayavkiotchet.html", context)
 
-def get_masters(request):
-    today = timezone.now().date()
-    current_month = today.month
+def get_masters(request, date=timezone.now().date()):
 
-    # Фильтрация заявок за текущий день и месяц со статусом "Выполнена"
+    if type(date) == type("1"):
+        date = datetime.datetime.strptime(date, '%Y%m%d').date()
+    if request.method == "POST":
+        form = DatePickerForm(request.POST)
+        if form.is_valid():
+            date = form.cleaned_data['date']
+            print(date)
+    else:
+        form = DatePickerForm()
+    # Фильтрация заявок за текущий день со статусом "Выполнена"
     zayavki_za_day = StateofZayavka.objects.filter(
-        Q(date=today) & Q(status__title="Выполнена")
+        Q(date=date) & Q(status__title="Выполнена")
     ).values_list('zayavka_id', flat=True)
 
+    master_list = Employer.objects.filter(employer_position__title="Мастер")
+
+    for employee in master_list:
+        zayavki = Zayavka.objects.filter(employer=employee)
+        zayavki2 = []
+
+        for zayavka in zayavki:
+            if zayavka.id in zayavki_za_day:
+                zayavki2.append(zayavka)
+
+        employee.zayavka_za_day_kol = len(zayavki2)
+    context = {"employee": master_list, "date": date, "form": form}
+    return render(request, "mastersotchet.html", context)
+
+def get_virychka_month(request, date1=datetime.date.today().replace(day=1),
+                      date2=datetime.date.today().replace(
+                day=calendar.monthrange(datetime.date.today().year, datetime.date.today().month)[1])):
+    categories = UslugaCategory.objects.all()
+
+    if type(date1) == type("1"):
+        date1 = datetime.datetime.strptime(date1, '%Y%m%d').date()
+    if type(date2) == type("1"):
+        date2 = datetime.datetime.strptime(date2, '%Y%m%d').date()
+    if request.method == "POST":
+        form = PeriodPickerForm(request.POST)
+        if form.is_valid():
+            date1 = form.cleaned_data['date1']
+            date2 = form.cleaned_data['date2']
+    else:
+        form = PeriodPickerForm()
+
+    # Фильтрация заявок за период со статусом "Выполнена"
+
     zayavki_za_month = StateofZayavka.objects.filter(
-        Q(date__month=current_month) & Q(status__title="Выполнена")
+        Q(date__range=(date1, date2)) & Q(status__title="Выполнена")
+    ).values_list('zayavka_id', flat=True)
+
+    virychka_za_month_total = 0
+
+    for category in categories:
+        category.master_list = Employer.objects.filter(category=category)
+        category.vyruchka_za_month = 0
+
+        for employee in category.master_list:
+            zayavki = Zayavka.objects.filter(employer=employee)
+            zayavki2 = []
+
+            for zayavka in zayavki:
+
+                if zayavka.id in zayavki_za_month:
+                    zayavki2.append(zayavka)
+                    category.vyruchka_za_month += zayavka.total_price
+
+            employee.zayavka_za_month = zayavki2
+        virychka_za_month_total += category.vyruchka_za_month
+    context = {"categories": categories, "virychka_za_month_total": virychka_za_month_total,
+               "form": form, "date1": date1, "date2": date2}
+    return render(request, "zayavkiotchetmonth.html", context)
+
+def get_masters_summa(request, date1=datetime.date.today().replace(day=1),
+                      date2=datetime.date.today().replace(
+                day=calendar.monthrange(datetime.date.today().year, datetime.date.today().month)[1])):
+
+    if type(date1) == type("1"):
+        date1 = datetime.datetime.strptime(date1, '%Y%m%d').date()
+    if type(date2) == type("1"):
+        date2 = datetime.datetime.strptime(date2, '%Y%m%d').date()
+    if request.method == "POST":
+        form = PeriodPickerForm(request.POST)
+        if form.is_valid():
+            date1 = form.cleaned_data['date1']
+            date2 = form.cleaned_data['date2']
+    else:
+        form = PeriodPickerForm()
+
+    # Фильтрация заявок за период со статусом "Выполнена"
+
+    zayavki_za_month = StateofZayavka.objects.filter(
+        Q(date__range=(date1, date2)) & Q(status__title="Выполнена")
     ).values_list('zayavka_id', flat=True)
 
     virychka_za_month_total = 0
@@ -299,20 +383,16 @@ def get_masters(request):
     for employee in master_list:
         zayavki = Zayavka.objects.filter(employer=employee)
         zayavki2 = []
-        zayavki3 = []
         vyruchka_za_month = 0
 
         for zayavka in zayavki:
-            if zayavka.id in zayavki_za_day:
-                zayavki2.append(zayavka)
-
             if zayavka.id in zayavki_za_month:
-                zayavki3.append(zayavka)
+                zayavki2.append(zayavka)
                 vyruchka_za_month += zayavka.total_price
 
-        employee.zayavka_za_day_kol = len(zayavki2)
-        employee.zayavka_za_month_kol = len(zayavki3)
+        employee.zayavka_za_month_kol = len(zayavki2)
         employee.vyruchka_za_month = vyruchka_za_month
         virychka_za_month_total += employee.vyruchka_za_month
-    context = {"employee": master_list, "virychka_za_month_total": virychka_za_month_total}
-    return render(request, "mastersotchet.html", context)
+    context = {"employee": master_list, "virychka_za_month_total": virychka_za_month_total,
+               "form": form, "date1": date1, "date2": date2}
+    return render(request, "mastersotchetsumma.html", context)

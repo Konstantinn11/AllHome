@@ -1,15 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div style="padding: 1em">    
+<div style="padding: 1em">
+<form method="POST" style="display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    width: 45%;
+    align-items: baseline">
+{% csrf_token %}
+    <div style="display: flex">
+{{ form.as_p }}
+    </div>
+<button type="submit" class="btn btn-outline-dark" style="display: flex">Генерировать отчет</button>
+</form>
+<h3>Отчет по выходам исполнителей за {{ date }}</h3>
 <table class="table table-hover" id="export">
+<thead style="display: none">
+<tr>
+    <th>
+        Отчет по выходам исполнителей за {{ date }}
+    </th>
+</tr>
+</thead>
   <thead>
     <tr>
       <th scope="col">№</th>
       <th scope="col">Исполнитель</th>
-      <th scope="col">Выходы за день</th>
-      <th scope="col">Выходы за месяц</th>
-      <th scope="col">Выручка за месяц, руб.</th>  
+      <th scope="col">Выходы за {{ date }}</th>
     </tr>
   </thead>
   <tbody>
@@ -18,17 +35,8 @@
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{ employee_item.get_full_name }}</td>
       <td>{{ employee_item.zayavka_za_day_kol }}</td>
-      <td>{{ employee_item.zayavka_za_month_kol }}</td>
-      <td>{{ employee_item.vyruchka_za_month }}</td>
     </tr>
   {% endfor %}
-  <tr>
-      <th scope="row"></th>
-      <td>Итого, руб.</td>
-      <td></td>
-      <td></td>
-      <td>{{ virychka_za_month_total }}</td>
-  </tr>
   </tbody>
 </table>
 <div style="display: flex; flex-direction: row-reverse;">
