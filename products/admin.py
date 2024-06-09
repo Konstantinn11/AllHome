@@ -62,6 +62,7 @@ class PositionAdmin(admin.ModelAdmin):
 admin.site.register(Position_Price, PositionAdmin)
 class PositionPriceInline(admin.TabularInline):
     model = Position_Price
+
 class PriceAdmin(admin.ModelAdmin):
     inlines = [PositionPriceInline]
 admin.site.register(Price, PriceAdmin)

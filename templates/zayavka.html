@@ -19,7 +19,7 @@
     <div class="row my-4 mx-4">
 
         <div class="col">
-            <b>Наименование</b><br>
+            <b>Наименование категории</b><br>
             <select class="form-select" name="category" id="id_category">
                 {% for cat in cats %}
                     <option value="{{ cat.pk }}" {% if cat.pk|stringformat:"s" == request.POST.category %}selected{% endif %}>{{ cat.title }}</option>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="col">
-            <b>Услуга</b><br>
+            <b>Услуга, руб.</b><br>
             <select class="form-select" name="usluga" id="id_usluga">
                 {% for usluga in uslugi %}
                     <option value="{{usluga.pk}}">
@@ -47,7 +47,7 @@
         </div>
 
         <div class="col">
-            <b>Дата</b><br>
+            <b>Дата исполнения</b><br>
             <input class="form-control" type="date" name="date" id="zayavka_date" required>
         </div>
     
@@ -65,11 +65,13 @@
     <div class="row my-4 mx-4">
 
         <div class="col">
+            <b>Здесь Вы можете оставить свой комментарий к заявке</b><br>
             <textarea class="form-control" name="comment_order" cols="30" rows="5"
                 placeholder="Комментарий к заявке" id="order_comment" required></textarea>
         </div>
 
         <div class="col">
+            <b>Адрес выполнения заявки</b><br>
             <div class="row">   
                 <div class="col">
                     <input class="form-control" type="text" name="address" placeholder="Введите адрес" id="address" required>

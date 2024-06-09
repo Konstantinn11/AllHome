@@ -12,6 +12,9 @@ class Customer(CustomUser):
     phone_number = models.CharField(max_length=20, null=False, blank=False, verbose_name='Номер телефона')
     soglasie = models.BooleanField(default=False, verbose_name='Согласие на обработку персональных данных')
 
+    def __str__(self):
+        return '{0} {1} {2}'.format(self.last_name, self.first_name, self.otchestvo)
+
     class Meta:
         verbose_name = 'Заказчик'
         verbose_name_plural = 'Заказчики'
@@ -107,7 +110,7 @@ class Zayavka(models.Model):
     customer = models.ForeignKey(to='Customer', on_delete=models.CASCADE, null=True, blank=True,
                                  verbose_name='Заказчик')
     employer = models.ForeignKey(to='Employer', on_delete=models.CASCADE, null=True, blank=True,
-                verbose_name='Сотрудник')
+                verbose_name='Исполнитель')
     positions_and_prices = models.TextField(max_length=1000, default='',
                                             verbose_name='Позиции и количество')
     total_price = models.PositiveIntegerField(default=0, verbose_name='Итого, руб.')
@@ -213,7 +216,7 @@ class StateofZayavka(models.Model):
 
 
 class Contact(models.Model):
-    username = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, verbose_name='Имя пользователя')
     message = models.TextField(max_length=200, blank=False, null=True, verbose_name='Сообщение')
     data = models.DateField(verbose_name="Дата отправки", default=timezone.now)
     time_send = models.TimeField(verbose_name='Время отправки', default=timezone.now)

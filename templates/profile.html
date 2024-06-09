@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 
-
 <h1 class="text-center">{{title_on_page}}</h1>
 
 {% if not orders.count %}
@@ -81,11 +80,11 @@
         </form>
     </div>
 </div>
-
-{% endif %}
-    <p class="text-center">
+<p class="text-center">
     *Отзыв публикуется в том случае, если он не содержит грубую лексику, рекламу и спам, а также жестокость и дискриминацию.
     </p>
+{% endif %}
+    
 {% endif %}
 
 {% endblock content %}
